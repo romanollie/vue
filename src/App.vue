@@ -117,17 +117,6 @@
                             <button @click="openModal" class="card__button">Заказать</button>
                         </div>
                       </div>
-                      <!-- <div v-for="item in clothes" :key="item" data-id="${id}"
-                      class="catalog__card card js__card ${type}">
-                          <img class="card__img" src="${img}"
-                          width="330px" height="330px" alt="${alt}">
-                          <p class="card__points">{{ this.price }} баллов</p>
-                          <p class="card__description">${title}</p>
-                          <p class="card__sizes">Размеры S/M/L</p>
-                          <div class="card__hidden">
-                              <button class="card__button">Заказать</button>
-                          </div>
-                      </div> -->
                     </div>
                 </section>
             </div>
@@ -159,7 +148,7 @@
         </footer>
     </div>
     <!-- MODAL -->
-    <div v-show="modalShown" class="pop pop__content js__pop">
+    <div v-show="modalShown" @click.self="closeModal" class="pop pop__content js__pop">
         <div class="modal js__modal">
             <div class="modal__images">
                 <div class="main-image">
