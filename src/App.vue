@@ -1,3 +1,4 @@
+/* eslint-disable vue/require-v-for-key */
 <template>
   <div id="app">
     <div class="page">
@@ -73,27 +74,60 @@
                         </button>
                     </div>
                     <div class="section__radiobuttons radiobuttons">
-                        <input class="radiobuttons__input js__input--all"
+                        <input @click="showAll" class="radiobuttons__input js__input--all"
                         type="radio" name="category" id="all-items">
-                        <label class="radiobuttons__label" for="all-items">Все товары</label>
-                        <input class="radiobuttons__input js__input--clothes"
+                        <label class="radiobuttons__label" for="all-items">
+                          Все товары
+                        </label>
+                        <input @click="showClothes" class="radiobuttons__input js__input--clothes"
                         type="radio" name="category" id="clothes">
-                        <label class="radiobuttons__label" for="clothes">Одежда</label>
-                        <input class="radiobuttons__input js__input--accessories"
+                        <label class="radiobuttons__label" for="clothes">
+                          Одежда
+                        </label>
+                        <input @click="showAccessories" class="radiobuttons__input
+                        js__input--accessories"
                         type="radio" name="category" id="accessories">
-                        <label class="radiobuttons__label" for="accessories">Аксессуары</label>
+                        <label class="radiobuttons__label"
+                        for="accessories">
+                          Аксессуары
+                        </label>
                     </div>
-                    <div class="section__catalog catalog js__catalog">
-                        <!-- <div class="catalog__card card">
-                            <img class="card__img" src="./images/mainpage/tshirt.svg"
-                            width="330px" height="330px" alt="Kolesa t-shirt">
-                            <p class="card__points">220 баллов</p>
-                            <p class="card__description">Футболка "Эволюционируй или ...</p>
-                            <p class="card__sizes">Размеры S/M/L</p>
-                            <div class="card__hidden">
-                                <button class="card__button">Заказать</button>
-                            </div>
-                        </div> -->
+                    <div class="section__catalog catalog js__catalog" >
+                      <div v-show="clothesShown" v-for="item in clothes" :key="item"
+                      class="catalog__card card js__card" :class="item.type">
+                        <img class="card__img" :src="require(`./images/mainpage/${item.img}.svg`)"
+                        :alt="item.alt"
+                        width="330px" height="330px">
+                        <p class="card__points">{{ item.price }} баллов</p>
+                        <p class="card__description">{{ item.title }}</p>
+                        <p class="card__sizes">Размеры S/M/L</p>
+                        <div class="card__hidden">
+                            <button @click="openModal" class="card__button">Заказать</button>
+                        </div>
+                      </div>
+                      <div v-show="accessoriesShown" v-for="item in accessories" :key="item"
+                      class="catalog__card card js__card" :class="item.type">
+                        <img class="card__img" :src="require(`./images/mainpage/${item.img}.svg`)"
+                        :alt="item.alt"
+                        width="330px" height="330px">
+                        <p class="card__points">{{ item.price }} баллов</p>
+                        <p class="card__description">{{ item.title }}</p>
+                        <p class="card__sizes">Размеры S/M/L</p>
+                        <div class="card__hidden">
+                            <button @click="openModal" class="card__button">Заказать</button>
+                        </div>
+                      </div>
+                      <!-- <div v-for="item in clothes" :key="item" data-id="${id}"
+                      class="catalog__card card js__card ${type}">
+                          <img class="card__img" src="${img}"
+                          width="330px" height="330px" alt="${alt}">
+                          <p class="card__points">{{ this.price }} баллов</p>
+                          <p class="card__description">${title}</p>
+                          <p class="card__sizes">Размеры S/M/L</p>
+                          <div class="card__hidden">
+                              <button class="card__button">Заказать</button>
+                          </div>
+                      </div> -->
                     </div>
                 </section>
             </div>
@@ -125,7 +159,7 @@
         </footer>
     </div>
     <!-- MODAL -->
-    <div class="pop pop__content js__pop">
+    <div v-show="modalShown" class="pop pop__content js__pop">
         <div class="modal js__modal">
             <div class="modal__images">
                 <div class="main-image">
@@ -202,7 +236,7 @@
                     <p>Написать дяде Рику для уточнения.</p>
                 </div>
             </div>
-            <div class="modal__close js__close-modal">
+            <div @click="closeModal" class="modal__close js__close-modal">
                 <img src="./images/modal/close.png" alt="" width="24px" height="24px">
             </div>
         </div>
@@ -212,6 +246,148 @@
 
 <script>
 
+export default {
+  name: 'App',
+  data() {
+    return {
+      clothes: [
+        {
+          id: 0,
+          title: 'Зеленая рубашка',
+          price: 100,
+          isNew: false,
+          img: 'tshirt--green',
+          alt: 'Зеленая рубашка',
+          type: 'clothes',
+        },
+        {
+          id: 1,
+          title: 'Зеленый свитер',
+          price: 300,
+          isNew: false,
+          img: 'sweater--green',
+          alt: 'Зеленый свитер',
+          type: 'clothes',
+        },
+        {
+          id: 2,
+          title: 'Белая рубашка',
+          price: 110,
+          isNew: false,
+          img: 'tshirt--white',
+          alt: 'Белая рубашка',
+          type: 'clothes',
+        },
+        {
+          id: 3,
+          title: 'Белые джинсы',
+          price: 220,
+          isNew: false,
+          img: 'trousers--white',
+          alt: 'Белые джинсы',
+          type: 'clothes',
+        },
+        {
+          id: 4,
+          title: 'Синие джинсы',
+          price: 270,
+          isNew: false,
+          img: 'trousers--blue',
+          alt: 'Синие джинсы',
+          type: 'clothes',
+        },
+        {
+          id: 5,
+          title: 'Белый халат',
+          price: 400,
+          isNew: false,
+          img: 'coat--white',
+          alt: 'Белый халат',
+          type: 'clothes',
+        },
+      ],
+      accessories: [
+        {
+          id: 6,
+          title: 'Бутылка для воды',
+          price: 50,
+          isNew: false,
+          img: 'bottle',
+          alt: 'Бутылка для воды',
+          type: 'accessories',
+        },
+        {
+          id: 7,
+          title: 'Зеленая сумка',
+          price: 450,
+          isNew: false,
+          img: 'bag--green',
+          alt: 'Зеленая сумка',
+          type: 'accessories',
+        },
+        {
+          id: 8,
+          title: 'Красный шарф',
+          price: 140,
+          isNew: false,
+          img: 'scarf--red',
+          alt: 'Красный шарф',
+          type: 'accessories',
+        },
+        {
+          id: 9,
+          title: 'Белый шарф',
+          price: 115,
+          isNew: false,
+          img: 'scarf--white',
+          alt: 'Белый шарф',
+          type: 'accessories',
+        },
+        {
+          id: 10,
+          title: 'Синяя сумка',
+          price: 470,
+          isNew: false,
+          img: 'bag--blue',
+          alt: 'Синяя сумка',
+          type: 'accessories',
+        },
+        {
+          id: 11,
+          title: 'Наушники',
+          price: 700,
+          isNew: false,
+          img: 'headphones',
+          alt: 'Наушники',
+          type: 'accessories',
+        },
+      ],
+      modalShown: false,
+      clothesShown: true,
+      accessoriesShown: true,
+    };
+  },
+  methods: {
+    openModal() {
+      this.modalShown = true;
+    },
+    closeModal() {
+      this.modalShown = false;
+    },
+    showAll() {
+      this.clothesShown = true;
+      this.accessoriesShown = true;
+    },
+    showClothes() {
+      this.clothesShown = true;
+      this.accessoriesShown = false;
+    },
+    showAccessories() {
+      this.clothesShown = false;
+      this.accessoriesShown = true;
+    },
+  },
+};
 </script>
 
 <style lang="scss">
