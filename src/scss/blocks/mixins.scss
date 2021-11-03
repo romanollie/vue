@@ -1,5 +1,10 @@
-@import './vars.scss';
+@import '../blocks/vars.scss';
 
-@mixin box-shadow ($x:0, $y:2px, $blur:10px, $offset:0) {
-    box-shadow: #{$x} #{$y} #{$blur} #{$offset} rgba($black, 0.1);
+@mixin font-properties {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: $main;
+    background-color: $bgcolor;
 }
